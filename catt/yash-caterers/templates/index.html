@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>YASH CATERERS – Premium Catering for Every Special Moment</title>
+<meta name="description" content="YASH CATERERS – Good Food, Great Mood. Premium catering for weddings, birthdays, engagements and every special moment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+</head>
+<body>
+
+<!-- Top bar: three-dot menu only -->
+<header class="topbar">
+  <div class="menu-wrap">
+    <button class="dots" id="dotsBtn" aria-label="More options" aria-haspopup="true" aria-expanded="false">&#8942;</button>
+    <div class="dots-menu" id="dotsMenu" hidden>
+      <a href="{{ url_for('admin_login') }}">ADMIN LOGIN</a>
+    </div>
+  </div>
+</header>
+
+<main id="scroller">
+
+  <!-- HERO (follows the reference image) -->
+  <section class="panel hero" id="home">
+    <div class="hero-top">
+      <div class="logo" aria-label="YASH CATERERS">
+        <svg class="dome" viewBox="0 0 64 36" aria-hidden="true"><path d="M32 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM6 30c0-14 11-21 26-21s26 7 26 21M2 33h60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <span class="logo-yash">YASH</span>
+        <span class="logo-cat">CATERERS</span>
+      </div>
+      <div class="hero-head">
+        <div class="divider"><i></i><svg viewBox="0 0 64 36" aria-hidden="true"><path d="M32 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM8 30c0-12 10-18 24-18s24 6 24 18M4 33h56" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><i></i></div>
+        <h1><span>Premium</span> <em class="gold">Catering</em></h1>
+        <p class="script">for Every Special Moment</p>
+        <p class="trio">Exquisite Food <b>&bull;</b> Elegant Presentation <b>&bull;</b> Unforgettable Experience</p>
+      </div>
+    </div>
+
+    <div class="hero-scene"><img src="{{ url_for('static', filename='img/hero-scene.jpg') }}" alt="Chef serving food at an elegant evening catering setup under golden lights"></div>
+
+    <div class="hero-bottom">
+      <ul class="feats">
+        <li><span class="ring"><svg viewBox="0 0 64 40"><path d="M32 6a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM10 32c0-11 9-17 22-17s22 6 22 17M6 35h52" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span>Delicious<br>Cuisine</li>
+        <li><span class="ring"><svg viewBox="0 0 64 40"><path d="M20 8h24l10 10-22 20L10 18zM10 18h44M26 8l6 30M38 8l-6 30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span>Elegant<br>Setup</li>
+        <li><span class="ring"><svg viewBox="0 0 64 40"><circle cx="32" cy="13" r="6" fill="currentColor"/><circle cx="16" cy="17" r="4.5" fill="currentColor"/><circle cx="48" cy="17" r="4.5" fill="currentColor"/><path d="M20 36c0-9 5-13 12-13s12 4 12 13zM6 34c0-6 3-9 9-9 2 0 4 .5 5 1.5-3 2-4.500 5-4.500 7.500zM58 34c0-6-3-9-9-9-2 0-4 .5-5 1.500 3 2 4.500 5 4.500 7.500z" fill="currentColor"/></svg></span>Professional<br>Service</li>
+        <li><span class="ring"><svg viewBox="0 0 64 40"><path d="M32 4l5.500 11.500 12.500 1.700-9.200 8.800 2.300 12.500L32 32.500 20.900 38.500l2.300-12.500L14 17.200l12.500-1.700z" fill="currentColor"/></svg></span>Memorable<br>Events</li>
+      </ul>
+      <div class="rule"><i></i><b>&#10086;</b><i></i></div>
+      <p class="extra">Let Us Make Your Event Extraordinary</p>
+    </div>
+  </section>
+
+  <!-- VIDEO SECTIONS – the six uploaded videos, in the original order, unmodified -->
+  {% set vids = [
+    ('01-showreel.mp4', 'Yash Caterers showreel'),
+    ('02-veg-special.mp4', 'Veg Special menu'),
+    ('03-non-veg-special.mp4', 'Non-Veg Special menu'),
+    ('04-starters.mp4', 'Starters menu'),
+    ('05-sweets.mp4', 'Sweets menu'),
+    ('06-ice-cream-juices.mp4', 'Ice-Cream and Juices menu')] %}
+  {% for f, label in vids %}
+  <section class="panel vid" id="video-{{ loop.index }}" aria-label="{{ label }}">
+    <video muted loop playsinline webkit-playsinline preload="none"
+           data-src="{{ url_for('static', filename='media/' ~ f) }}"
+           aria-label="{{ label }}"></video>
+  </section>
+  {% endfor %}
+
+  <!-- CONTACT -->
+  <section class="panel contact" id="contact">
+    <div class="contact-inner">
+      <div class="logo small"><span class="logo-yash">YASH</span><span class="logo-cat">CATERERS</span></div>
+      <p class="tag">GOOD FOOD &nbsp;&#9670;&nbsp; GREAT MOOD</p>
+      <h2>Contact Us</h2>
+
+      {% for p in phones %}
+      <div class="num-card">
+        <button class="num" type="button" data-phone="{{ p.number }}" data-wa="{{ p.wa }}">{{ p.number }}</button>
+        <div class="btn-row">
+          <a class="btn gold" href="tel:{{ p.number }}">CALL NOW</a>
+          <a class="btn green" target="_blank" rel="noopener"
+             href="https://wa.me/{{ p.wa }}?text={{ wa_message|urlencode }}">WHATSAPP ENQUIRY</a>
+        </div>
+      </div>
+      {% endfor %}
+
+      <button class="btn gold big" type="button" data-open-enquiry>ENQUIRE NOW</button>
+    </div>
+  </section>
+</main>
+
+<!-- Fixed enquire bar -->
+<div class="bar" id="bar">
+  <button class="btn gold" type="button" data-open-enquiry>ENQUIRE NOW</button>
+</div>
+
+<!-- Call / WhatsApp chooser (when a number is tapped) -->
+<div class="sheet-backdrop" id="sheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetNum">
+    <p class="sheet-num" id="sheetNum"></p>
+    <a class="btn gold" id="sheetCall" href="#">CALL NOW</a>
+    <a class="btn green" id="sheetWa" target="_blank" rel="noopener" href="#">WHATSAPP ENQUIRY</a>
+    <button class="btn ghost" type="button" id="sheetClose">CANCEL</button>
+  </div>
+</div>
+
+<!-- ENQUIRY FORM -->
+<div class="modal" id="enquiry" hidden role="dialog" aria-modal="true" aria-labelledby="enqTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2 id="enqTitle">Enquire Now</h2>
+      <button class="x" type="button" id="enqClose" aria-label="Close form">&times;</button>
+    </div>
+
+    <form id="enqForm" novalidate>
+      <h3>Customer Details</h3>
+      <label>Full Name *<input name="name" type="text" autocomplete="name" maxlength="100" required></label>
+      <label>Mobile Number *<input name="mobile" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="10-digit mobile number" maxlength="16" required></label>
+      <label>Event Address / Venue Address *<textarea name="address" rows="2" maxlength="500" required></textarea></label>
+      <div class="two">
+        <label>Event Date *<input name="event_date" type="date" min="{{ today }}" required></label>
+        <label>Event Timing *<input name="event_time" type="time" required></label>
+      </div>
+      <label>Event Type *
+        <select name="event_type" required>
+          <option value="">Select event type</option>
+          {% for t in event_types %}<option>{{ t }}</option>{% endfor %}
+        </select>
+      </label>
+      <label id="otherTypeWrap" hidden>Please specify event type<input name="event_type_other" type="text" maxlength="80"></label>
+
+      <h3>Select Your Food Requirements</h3>
+      <div id="rows"></div>
+      <div class="err" id="err-items"></div>
+      <button class="btn outline" type="button" id="addRow">+ ADD ANOTHER ITEM</button>
+
+      <h3>Total Number of People</h3>
+      <label>Number of guests
+        <select id="peopleSel">
+          <option value="">Select number of people</option>
+          {% for n in people_presets %}<option value="{{ n }}">{{ '{:,}'.format(n) }} People</option>{% endfor %}
+          <option value="custom">Custom Number</option>
+        </select>
+      </label>
+      <label id="peopleCustomWrap" hidden>Enter number of people<input id="peopleCustom" type="number" inputmode="numeric" min="1" max="1000000" step="1" placeholder="e.g. 1200"></label>
+      <div class="err" id="err-people_count"></div>
+
+      <h3>Special Requirements / Notes <small>(optional)</small></h3>
+      <label class="nolabel"><textarea name="notes" rows="3" maxlength="2000" placeholder="Anything else about your event"></textarea></label>
+
+      <div class="err form-err" id="formErr" role="alert"></div>
+      <button class="btn gold big" type="submit" id="submitBtn">SUBMIT ENQUIRY</button>
+    </form>
+
+    <div class="thanks" id="thanks" hidden>
+      <div class="tick">&#10003;</div>
+      <p>Thank you for choosing YASH CATERERS! Your enquiry has been submitted successfully. Our team will contact you soon.</p>
+      <p class="eid">Enquiry ID: <b id="thanksId"></b></p>
+      <button class="btn gold" type="button" id="thanksClose">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<script id="menu-data" type="application/json">{{ menu|tojson }}</script>
+<script id="unit-data" type="application/json">{{ units|tojson }}</script>
+<script src="{{ url_for('static', filename='js/site.js') }}"></script>
+</body>
+</html>

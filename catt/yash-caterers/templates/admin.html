@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="csrf" content="{{ csrf_token() }}">
+<title>Owner Dashboard – YASH CATERERS</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#e3bd6a;--gold-2:#b8893a;--gold-3:#f6dd9b}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;color:#f4ead2;font-family:'Montserrat',system-ui,sans-serif;font-size:14px;
+    background:radial-gradient(120% 40% at 50% 0%,#1a1f4d 0%,#0b1233 30%,#050505 70%) fixed}
+  .wrap{max-width:960px;margin:0 auto;padding:16px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+  h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(20px,5vw,30px);margin:0;color:var(--gold-3);letter-spacing:.04em;line-height:1.1}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-weight:700;font-size:12px;letter-spacing:.1em;cursor:pointer;text-decoration:none}
+  .btn.gold{background:linear-gradient(180deg,var(--gold-3),var(--gold) 45%,var(--gold-2));color:#1a1204;border-color:transparent}
+  .btn.danger{border-color:#b3373c;color:#ff8a8d}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+  @media(min-width:700px){.stats{grid-template-columns:repeat(4,1fr)}}
+  .stat{border:1px solid rgba(227,189,106,.4);border-radius:14px;padding:14px;background:rgba(0,0,0,.4)}
+  .stat b{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:38px;color:var(--gold-3);line-height:1}
+  .stat span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#cdbf9a}
+  .filters{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:14px}
+  @media(min-width:700px){.filters{grid-template-columns:2fr 1fr auto}}
+  input,select{width:100%;padding:12px;font-size:16px;border-radius:10px;background:#0a0a0a;border:1px solid #4a3d1f;color:#fff;outline:none;color-scheme:dark}
+  input:focus,select:focus{border-color:var(--gold)}
+  .list{display:grid;gap:10px}
+  .card{border:1px solid rgba(227,189,106,.35);border-radius:14px;padding:14px;background:rgba(0,0,0,.45)}
+  .card .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+  .card .nm{font-weight:700;font-size:16px}
+  .card .meta{color:#cdbf9a;font-size:12.5px;margin-top:3px;line-height:1.5}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.06em;border:1px solid}
+  .s-New{color:#7cc4ff;border-color:#2f6da3}.s-Contacted{color:#f0d46a;border-color:#8d7a22}
+  .s-Confirmed{color:#7be0a1;border-color:#25774a}.s-Completed{color:#c9b6ff;border-color:#5c4aa3}
+  .s-Cancelled{color:#ff8a8d;border-color:#8c2f33}
+  .empty{text-align:center;color:#b9ab86;padding:40px 10px;border:1px dashed #4a3d1f;border-radius:14px}
+  /* details */
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:10;overflow-y:auto;padding:12px}
+  .backdrop[hidden]{display:none}
+  .panel{max-width:640px;margin:0 auto;border:1px solid var(--gold-2);border-radius:18px;background:#0b0b10;padding:16px 16px 20px}
+  .panel .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .panel h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;margin:0;color:var(--gold-3)}
+  .sec{margin-top:16px}
+  .sec h3{margin:0 0 8px;font-size:12px;letter-spacing:.16em;color:var(--gold);border-bottom:1px solid rgba(227,189,106,.3);padding-bottom:6px}
+  dl{display:grid;grid-template-columns:130px 1fr;gap:6px 10px;margin:0}
+  dt{color:#b9ab86}dd{margin:0;word-break:break-word;white-space:pre-wrap}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:7px 6px;border-bottom:1px solid #2a2415;font-size:13.5px}
+  th{color:#b9ab86;font-weight:600;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px}
+  .actions select{width:auto;flex:1;min-width:150px}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;border:1px solid var(--gold);padding:10px 16px;border-radius:999px;z-index:20;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>YASH CATERERS – OWNER DASHBOARD</h1>
+    <form method="post" action="{{ url_for('admin_logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn" type="submit" style="width:auto">LOGOUT</button>
+    </form>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b id="st-total">0</b><span>Total Enquiries</span></div>
+    <div class="stat"><b id="st-new">0</b><span>New Enquiries</span></div>
+    <div class="stat"><b id="st-confirmed">0</b><span>Confirmed Enquiries</span></div>
+    <div class="stat"><b id="st-completed">0</b><span>Completed Enquiries</span></div>
+  </div>
+
+  <div class="filters">
+    <input id="q" type="search" placeholder="Search by customer name or phone number" autocomplete="off">
+    <input id="d" type="date" aria-label="Filter by event date">
+    <button class="btn" id="clear" type="button">CLEAR</button>
+  </div>
+
+  <div class="list" id="list"></div>
+</div>
+
+<div class="backdrop" id="detail" hidden>
+  <div class="panel" id="panel"></div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  'use strict';
+  var STATUSES = {{ statuses|tojson }};
+  var CSRF = document.querySelector('meta[name=csrf]').content;
+  var $ = function(s){return document.querySelector(s)};
+  var data = [];
+
+  function el(tag, cls, text){var n=document.createElement(tag); if(cls)n.className=cls; if(text!=null)n.textContent=text; return n;}
+  function fmtDate(d){ if(!d) return '—'; var p=d.split('-'); var dt=new Date(Date.UTC(+p[0],+p[1]-1,+p[2]));
+    return dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'}); }
+  function fmtTime(t){ if(!t) return '—'; var p=t.split(':'),h=+p[0]; return ((h%12)||12)+':'+p[1]+' '+(h<12?'AM':'PM'); }
+  function fmtStamp(s){ return new Date(s).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'numeric',minute:'2-digit',hour12:true,timeZone:'Asia/Kolkata'}); }
+  function fmtQty(n){ return String(+n.toFixed(3)); }
+  function typeOf(e){ return e.event_type==='Other' && e.event_type_other ? 'Other – '+e.event_type_other : e.event_type; }
+  function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true},2500);}
+
+  function api(method, url, body){
+    return fetch(url,{method:method,credentials:'same-origin',
+      headers:Object.assign({'X-CSRF-Token':CSRF},body?{'Content-Type':'application/json'}:{}),
+      body:body?JSON.stringify(body):undefined}).then(function(r){
+        if(r.status===401){location.href='/admin/login';throw new Error('auth');}
+        return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||'Request failed'); return j; });
+      });
+  }
+
+  function load(){
+    var qs=new URLSearchParams(); if($('#q').value.trim())qs.set('q',$('#q').value.trim()); if($('#d').value)qs.set('date',$('#d').value);
+    return api('GET','/admin/api/enquiries?'+qs).then(function(j){
+      data=j.enquiries; $('#st-total').textContent=j.stats.total; $('#st-new').textContent=j.stats.New;
+      $('#st-confirmed').textContent=j.stats.Confirmed; $('#st-completed').textContent=j.stats.Completed; render();
+    }).catch(function(e){ if(e.message!=='auth') toast(e.message); });
+  }
+
+  function render(){
+    var list=$('#list'); list.textContent='';
+    if(!data.length){ list.appendChild(el('div','empty', ($('#q').value||$('#d').value)?'No enquiries match your search.':'No enquiries yet. New customer enquiries will appear here.')); return; }
+    data.forEach(function(e){
+      var c=el('div','card'), top=el('div','top'), l=el('div');
+      l.appendChild(el('div','nm',e.name));
+      l.appendChild(el('div','meta',e.mobile+' · '+typeOf(e)));
+      l.appendChild(el('div','meta','Event: '+fmtDate(e.event_date)+', '+fmtTime(e.event_time)));
+      l.appendChild(el('div','meta','ID: '+e.enquiry_id));
+      top.appendChild(l); top.appendChild(el('span','pill s-'+e.status,e.status.toUpperCase()));
+      c.appendChild(top);
+      var b=el('button','btn gold','VIEW DETAILS'); b.style.marginTop='12px'; b.type='button';
+      b.addEventListener('click',function(){openDetail(e.enquiry_id)}); c.appendChild(b);
+      list.appendChild(c);
+    });
+  }
+
+  function sec(title, pairs){
+    var s=el('div','sec'); s.appendChild(el('h3',null,title)); var dl=el('dl');
+    pairs.forEach(function(p){dl.appendChild(el('dt',null,p[0]));dl.appendChild(el('dd',null,p[1]));});
+    s.appendChild(dl); return s;
+  }
+
+  function openDetail(id){
+    var e=data.find(function(x){return x.enquiry_id===id}); if(!e) return;
+    var p=$('#panel'); p.textContent='';
+    var hd=el('div','hd'); hd.appendChild(el('h2',null,'Enquiry Details'));
+    var x=el('button','btn','CLOSE'); x.type='button'; x.addEventListener('click',closeDetail); hd.appendChild(x); p.appendChild(hd);
+
+    p.appendChild(sec('CUSTOMER INFORMATION',[['Customer Name',e.name],['Mobile Number',e.mobile]]));
+    p.appendChild(sec('EVENT INFORMATION',[['Event Address',e.address],['Event Date',fmtDate(e.event_date)],['Event Timing',fmtTime(e.event_time)],['Event Type',typeOf(e)]]));
+
+    var f=el('div','sec'); f.appendChild(el('h3',null,'FOOD REQUIREMENTS'));
+    if(e.items.length){
+      var t=el('table'), th=el('tr'); ['Food Item','Quantity','Unit'].forEach(function(h){th.appendChild(el('th',null,h))}); t.appendChild(th);
+      e.items.forEach(function(i){var r=el('tr'); r.appendChild(el('td',null,i.name)); r.appendChild(el('td',null,fmtQty(i.quantity))); r.appendChild(el('td',null,i.unit)); t.appendChild(r);});
+      f.appendChild(t);
+    } else f.appendChild(el('div','meta','No individual food items selected.'));
+    var dl=el('dl'); dl.style.marginTop='10px'; dl.appendChild(el('dt',null,'Total People')); dl.appendChild(el('dd',null,e.people_count!=null?e.people_count.toLocaleString('en-IN')+' People':'Not specified')); f.appendChild(dl);
+    p.appendChild(f);
+
+    p.appendChild(sec('ADDITIONAL INFORMATION',[['Special Requirements',e.notes||'—'],['Enquiry ID',e.enquiry_id],['Submitted',fmtStamp(e.created_at)],['Status',e.status]]));
+
+    var a=el('div','actions'), sel=el('select'); STATUSES.forEach(function(s){var o=el('option',null,s);o.value=s;if(s===e.status)o.selected=true;sel.appendChild(o);});
+    var save=el('button','btn gold','UPDATE STATUS'); save.type='button';
+    save.addEventListener('click',function(){
+      api('PATCH','/admin/api/enquiries/'+encodeURIComponent(e.enquiry_id)+'/status',{status:sel.value})
+        .then(function(){toast('Status updated'); return load().then(function(){openDetail(id)});}).catch(function(er){toast(er.message)});
+    });
+    var del=el('button','btn danger','DELETE'); del.type='button';
+    del.addEventListener('click',function(){
+      var warn=e.status==='Completed'||e.status==='Cancelled'?'':'\n\nNote: this enquiry is still marked "'+e.status+'".';
+      if(!confirm('Delete enquiry '+e.enquiry_id+' ('+e.name+') permanently? This cannot be undone.'+warn)) return;
+      api('DELETE','/admin/api/enquiries/'+encodeURIComponent(e.enquiry_id)).then(function(){closeDetail();toast('Enquiry deleted');load();}).catch(function(er){toast(er.message)});
+    });
+    a.appendChild(sel); a.appendChild(save); a.appendChild(del); p.appendChild(a);
+    $('#detail').hidden=false; $('#detail').scrollTop=0; document.body.style.overflow='hidden';
+  }
+  function closeDetail(){ $('#detail').hidden=true; document.body.style.overflow=''; }
+  $('#detail').addEventListener('click',function(ev){if(ev.target===this)closeDetail();});
+  document.addEventListener('keydown',function(ev){if(ev.key==='Escape')closeDetail();});
+
+  var timer; $('#q').addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(load,250)});
+  $('#d').addEventListener('change',load);
+  $('#clear').addEventListener('click',function(){$('#q').value='';$('#d').value='';load();});
+  load();
+})();
+</script>
+</body>
+</html>
